@@ -101,7 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0027285ffb505e43a4bc740c644e4e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInventory: {fileID: 0}
+  playerInventory: {fileID: 8503333630413882229, guid: 58cd4132e2b893dc0b3d64b1b1db61c1, type: 3}
   zonesARevitaliser:
   - {fileID: 0}
   - {fileID: 0}
@@ -130,10 +130,11 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  messageUI: {fileID: 0}
+  messageUI: {fileID: 6255839098810112431, guid: 1345444b1fbd19847847a0c07c5fb18d, type: 3}
   besoinEau: 1
   besoinGraines: 1
   besoinFertilisant: 1
+  messageObjectifUI: {fileID: 7981199733948150809, guid: 3d819a88989ec981081275c5fc2b492a, type: 3}
 --- !u!61 &8527747701098991148
 BoxCollider2D:
   m_ObjectHideFlags: 0

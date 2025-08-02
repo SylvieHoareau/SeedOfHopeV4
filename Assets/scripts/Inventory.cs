@@ -1,8 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Inventory : MonoBehaviour
 {
+    public AITerminal terminal; // glisser l'IA dans l'inspecteur
+    public GameObject messageObjectifUI; // glisser dans le texte dans l'inspecteur
+
     // Dictionnaire pour stocker les objets et leur quantité
     [SerializeField]
     private Dictionary<string, int> items = new Dictionary<string, int>();
@@ -19,14 +23,22 @@ public class Inventory : MonoBehaviour
 
     public void AddItem(string itemName)
     {
-        if (items.ContainsKey(itemName))
-        {
-            items[itemName]++;
-        }
-        else
-        {
-            items[itemName] = 1;
-        }
+
+        if (!items.ContainsKey(itemName))
+            items[itemName] = 0;
+
+        items[itemName]++;
+        Debug.Log("Objet ajouté à l'inventaire: " + itemName);
+
+
+        // if (items.ContainsKey(itemName))
+        // {
+        //     items[itemName]++;
+        // }
+        // else
+        // {
+        //     items[itemName] = 1;
+        // }
 
         // Si l'objet est une goutte d'eau, incrémente la variable dédiée
         switch (itemName)
@@ -46,6 +58,24 @@ public class Inventory : MonoBehaviour
         }
 
         Debug.Log("Objet ajouté à l’inventaire : " + itemName + " (x" + items[itemName] + ")");
+
+        // Vérifier si les objectifs sont atteints
+        if (terminal != null && messageObjectifUI != null)
+        {
+            int eau = GetWaterDropCount();
+            int graines = GetSeedCount();
+            int fertil = GetFertilizerCount();
+
+            if (eau >= terminal.besoinEau &&
+            graines >= terminal.besoinGraines &&
+            fertil >= terminal.besoinFertilisant)
+            {
+                messageObjectifUI.SetActive(true);
+                messageObjectifUI.GetComponent<TMPro.TextMeshProUGUI>().text =
+                "Toutes les ressources ont été collectées. Va les apporter au terminal IA !";
+            }
+        }
+
     }
 
     public void ShowInventory()

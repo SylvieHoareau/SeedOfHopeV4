@@ -18,6 +18,12 @@ public class AITerminal : MonoBehaviour
 
     private PlayerControls controls;
 
+    [Header("UI Objectif")]
+    public GameObject messageObjectifUI; // Glisse ici le même objet que dans Inventory
+
+    public ObjectiveUI objectiveUI;
+    // Ajouter un champ
+    private System.Action<UnityEngine.InputSystem.InputAction.CallbackContext> interactionAction;
     void Awake()
     {
         controls = new PlayerControls();
@@ -31,6 +37,7 @@ public class AITerminal : MonoBehaviour
             if (joueurDansZone)
                 ActiverIA();
         };
+        controls.Player.Interact.performed += interactionAction;
     }
 
     void OnDisable()
@@ -40,13 +47,15 @@ public class AITerminal : MonoBehaviour
             if (joueurDansZone)
                 ActiverIA();
         };
+        controls.Player.Interact.performed -= interactionAction;
         controls.Disable();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        if (objectiveUI != null)
+            objectiveUI.AfficherObjectif();
     }
 
     // Update is called once per frame
@@ -78,6 +87,12 @@ public class AITerminal : MonoBehaviour
 
             if (messageUI != null)
                 messageUI.text = "[ I.A LOG ] Ressources suffisantes.\nRevitalisation en cours ... trouvez la porte de sortie";
+
+            if (objectiveUI != null)
+                objectiveUI.AfficherObjectifAtteint();
+                
+            if (messageObjectifUI != null)
+                messageObjectifUI.SetActive(false); // Cache le message objectif
         }
         else
         {
