@@ -15,6 +15,34 @@ public class AITerminal : MonoBehaviour
     public int besoinFertilisant = 1;
 
     private bool joueurDansZone = false;
+
+    private PlayerControls controls;
+
+    void Awake()
+    {
+        controls = new PlayerControls();
+    }
+
+    void OnEnable()
+    {
+        controls.Enable();
+        controls.Player.Interact.performed += ctx =>
+        {
+            if (joueurDansZone)
+                ActiverIA();
+        };
+    }
+
+    void OnDisable()
+    {
+        controls.Player.Interact.performed -= ctx =>
+        {
+            if (joueurDansZone)
+                ActiverIA();
+        };
+        controls.Disable();
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -64,7 +92,8 @@ public class AITerminal : MonoBehaviour
         {
             joueurDansZone = true;
             if (messageUI != null)
-                messageUI.text = "[ I.A LOG ] Appuyer sur E pour interagir.";
+                // Le joueur appuie sur la touche A de la console pour interagir avec l'IA
+                messageUI.text = "[ I.A LOG ] Appuyer sur la touche A pour interagir.";
         }
     }
 

@@ -21,6 +21,8 @@ public class PlayerHealth : MonoBehaviour
         healthBar.SetMaxHealth(maxHealth);
         if (gameOverUI != null)
             gameOverUI.SetActive(false);
+
+        PlayerPrefs.SetString("LastPlayedLevel", SceneManager.GetActiveScene().name);
     }
 
     public void Update()

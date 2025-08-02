@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -5,10 +6,46 @@ public class PlayerMovementIsometric : MonoBehaviour
 {
     public float moveSpeed = 5f;
 
+    private PlayerControls controls;
     private Rigidbody2D rb;
     private Animator animator;
     private Vector2 movement;
 
+    void Awake()
+    {
+        controls = new PlayerControls();
+
+        controls.Player.Move.performed += ctx => movement = ctx.ReadValue<Vector2>();
+        controls.Player.Move.canceled += ctx => movement = Vector2.zero;
+
+        // Blind de l'action Evasion
+        controls.Player.Evade.performed += ContextMenu => Evasion();
+    }
+
+    void OnEnable()
+    {
+        controls.Enable();
+    }
+
+    void OnDisable()
+    {
+        controls.Disable();  
+    }
+
+    void Evasion()
+    {
+        Debug.Log("Evasion activée !");
+        StartCoroutine(EvasionTemporaire());
+    }
+
+    IEnumerator EvasionTemporaire()
+    {
+        Collider2D col = GetComponent<Collider2D>();
+        col.isTrigger = true;
+        // Ajoute un effet visuel ou un champs
+        yield return new WaitForSeconds(1.5f);
+        col.isTrigger = false;
+    }
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
