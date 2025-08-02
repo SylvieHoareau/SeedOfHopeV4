@@ -11,11 +11,17 @@ public class Pickup : MonoBehaviour
 
     public ItemType itemType = ItemType.WaterDrop;
 
+    [Header("Audio")]
+    public AudioClip pickupSound; // À assigner dans l'inspecteur
+    private AudioSource audioSource;
+
     void Start()
     {
         Vector3 pos = transform.position;
         pos.z = 0;
         transform.position = pos;
+
+        audioSource = Camera.main.GetComponent<AudioSource>();
     }
 
     void Update()
@@ -37,6 +43,11 @@ public class Pickup : MonoBehaviour
             {
                 string itemName = ConvertItemTypeToName(itemType);
                 inventory.AddItem(itemName);
+
+                // Joue le son de collecte à l'endroit exacte de la collecte
+                if (pickupSound != null && audioSource != null)
+                    AudioSource.PlayClipAtPoint(pickupSound, transform.position);
+
                 Destroy(gameObject); // Détruire la goutte après collecte
             }
         }
