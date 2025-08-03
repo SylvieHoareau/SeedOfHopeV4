@@ -67,6 +67,7 @@ public class PlayerMovementIsometric : MonoBehaviour
 
         // Debug
         Debug.Log("Input reçu : " + movement + " | IsWalking : " + isWalking);
+        Debug.Log("Input actif ?" + controls.Player.Move.enabled);
     }
 
     void FixedUpdate()

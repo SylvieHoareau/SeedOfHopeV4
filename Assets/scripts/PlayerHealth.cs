@@ -130,4 +130,12 @@ public class PlayerHealth : MonoBehaviour
         yield return new WaitForSeconds(InvincibilityTimeAfterHit);
         isInvincible = false;
     }
+
+    // Cette fonction gère le soin du joueur pendant le niveau 4
+    public void Heal(int amount)
+    {
+        currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
+        healthBar.SetHealth(currentHealth); // si tu as une barre de vie
+    }
+
 }
