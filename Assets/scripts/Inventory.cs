@@ -89,6 +89,25 @@ public class Inventory : MonoBehaviour
         Debug.Log("Gouttes d'eau collectées : " + waterDropCount);
     }
 
+    public void RemoveItem(string itemName)
+{
+    switch (itemName)
+    {
+        case "Water Drop":
+            if (waterDropCount > 0) waterDropCount--;
+            break;
+        case "Seed":
+            if (seedCount > 0) seedCount--;
+            break;
+        case "Fertilizer":
+            if (fertilizerCount > 0) fertilizerCount--;
+            break;
+    }
+
+    Debug.Log("Objet volé : " + itemName);
+}
+
+
     // Accesseur public pour d'autres scripts (UI par exemple)
     public int GetWaterDropCount()
     {

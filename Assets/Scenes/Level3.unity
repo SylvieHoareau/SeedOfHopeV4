@@ -4098,7 +4098,7 @@ MonoBehaviour:
   moveSpeed: 2
   patrolPoints: []
   warningUI: {fileID: 0}
-  voleurSound: {fileID: 0}
+  voleurSound: {fileID: 8300000, guid: 2c5774e6ab7fef62099f85956a4ba399, type: 3}
 --- !u!1001 &1154890106
 PrefabInstance:
   m_ObjectHideFlags: 0
