@@ -1,5 +1,7 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.InputSystem;
+using System.Collections; // Ajout de la bibliothèque pour les coroutines
 
 // Ce script gère le terminal d'intellignece artificielle (IA) dans le jeu
 // Il permet au joueur d'activer des zones en apportant les bonnes ressources
@@ -26,9 +28,8 @@ public class AITerminal : MonoBehaviour
     // Nombre de fertiliant nécessaire
     public int besoinFertilisant;
 
-    private int eauCollectee = 0;
-    private int grainesCollectees = 0;
-    private int fertilisantCollecte = 0;
+    // Booléen pour savoir si l'objectif est atteint
+    private bool objectifAtteint = false;
 
     // Indique si le joueur est dans la zone d'interaction avec le terminal
     private bool joueurDansZone = false;
@@ -59,12 +60,6 @@ public class AITerminal : MonoBehaviour
     {
         // Active les contrôles du joueur
         controls.Enable();
-        // Quand le joueur appuie sur la touche d'interaction, on vérifie s'il est dans la zone
-        controls.Player.Interact.performed += ctx =>
-        {
-            if (joueurDansZone)
-                ActiverIA();
-        };
         // Abonnement à l'action d'interaction
         controls.Player.Interact.performed += interactionAction;
     }
@@ -72,12 +67,6 @@ public class AITerminal : MonoBehaviour
     void OnDisable()
     {
         // On se désabonne de l'action d'interaction
-        controls.Player.Interact.performed -= ctx =>
-        {
-            if (joueurDansZone)
-                ActiverIA();
-        };
-        // Désabonnement
         controls.Player.Interact.performed -= interactionAction;
         // Désactive les contrôles du joueur
         controls.Disable();
@@ -108,30 +97,21 @@ public class AITerminal : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (joueurDansZone && Input.GetKeyDown(KeyCode.E))
-        {
-            ActiverIA();
-        }
-    }
-
     // Fonction qui vérifie si le joueur a assez de ressources pour activer les zones 
     void ActiverIA()
     {
+        // Inventaire du joueur (pour vérifier les ressources)
         if (playerInventory == null) return;
 
-        // On récupère le nombre de ressources du joueur
+        // On récupère le nombre de ressources du joueur en temps réel
         int eau = playerInventory.GetWaterDropCount();
         int graines = playerInventory.GetSeedCount();
         int fertil = playerInventory.GetFertilizerCount();
 
-        Debug.Log($"[DEBUG] Inventaire : Eau={eau}, Graines={graines}, Fertilisant={fertil}");
-
-        // Si le joueur a assez de chaque ressource...
+        // On vérifie si le joueur a toutes les ressources NECESSAIRES
         if (eau >= besoinEau && graines >= besoinGraines && fertil >= besoinFertilisant)
         {
+            // Le joueur a les ressources nécessaires, on lance le processus
             // On active toutes les zones à revitaliser
             foreach (GameObject zone in zonesARevitaliser)
             {
@@ -139,47 +119,57 @@ public class AITerminal : MonoBehaviour
                     zone.SetActive(true);
             }
 
-            // On désactive l'UI du terminal pour ne plus afficher l'objectif de collecte
-            if (terminalUI != null)
-            {
-                terminalUI.SetActive(false);
-            }
-
             // On affiche un message de succès à l'écran
-                if (messageUI != null)
-                    messageUI.text = "[ I.A LOG ] Ressources suffisantes.\nRevitalisation en cours ... trouvez la porte de sortie";
+            AfficherMessage("[ I.A. LOG] Ressources suffisantes. \nRevitalisation en cours... trouve la porte de sortie");
 
-            // On indique que l'objectif est atteint
-            if (objectiveUI != null)
-                objectiveUI.AfficherObjectifAtteint();
+            // On désactive l'UI du terminal
+            // if (terminalUI != null)
+            // {
+            //     terminalUI.SetActive(false);
+            // }
 
+            // Démarrage de la coroutine pour afficher le message puis désactiver l'UI
+            StartCoroutine(AfficherMessageEtDesactiverUI());
         }
         else
         {
-            // Si le joueur n'a pas assez de ressources, on affiche un message d'erreur
-            messageUI.text = "[ I.A LOG ] Ressources insuffisantes.\nAnalyse en attente...";
+            // Si le joueur n'a pas assez de ressources
+            AfficherMessage("[ I.A. LOG ] Ressources insuffisantes.\nAnalyse en attente...");
+        }
+    }
+    
+     // Nouvelle fonction (coroutine) pour gérer le message et la désactivation de l'UI
+    private IEnumerator AfficherMessageEtDesactiverUI()
+    {
+        // On affiche le message de succès à l'écran
+        AfficherMessage("[ I.A. LOG] Ressources suffisantes. \nRevitalisation en cours... trouve la porte de sortie");
+
+        // On attend 3 secondes pour que le joueur ait le temps de lire
+        yield return new WaitForSeconds(3.0f);
+
+        // On désactive l'UI du terminal
+        if (terminalUI != null)
+        {
+            terminalUI.SetActive(false);
         }
     }
 
     // Appeler cette fonction à chaque fois qu'une ressource est collectée
-    public void AjouterRessource(string type, int quantite)
+    public void AjouterRessource()
     {
-        if (type == "eau")
-        {
-            eauCollectee += quantite;
-        }
-        else if (type == "graines")
-        {
-            grainesCollectees += quantite;
-        }
-        else if (type == "fertilisant")
-        {
-            fertilisantCollecte += quantite;
-        }
+        if (playerInventory == null) return;
 
-        // On vérifie si les objectifs sont atteints
-        if (eauCollectee >= besoinEau && grainesCollectees >= besoinGraines && fertilisantCollecte >= besoinFertilisant)
+        // On récupère le nombre de ressources du joueur en temps réel
+        int eau = playerInventory.GetWaterDropCount();
+        int graines = playerInventory.GetSeedCount();
+        int fertil = playerInventory.GetFertilizerCount();
+
+        // Si l'objectif n'est pas encore atteint et que les conditions sont remplis
+        if (!objectifAtteint && eau >= besoinEau && graines >= besoinGraines && fertil >= besoinFertilisant)
         {
+            // Les objectifs sont atteints
+            objectifAtteint = true;
+
             // On appelle la fonction de l'ObjectiveUI
             if (objectiveUI != null)
             {
@@ -193,10 +183,21 @@ public class AITerminal : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            // On vérifie que le joueur se trouve dans la zone du terminal IA
             joueurDansZone = true;
-            if (messageUI != null)
-                // Le joueur appuie sur la touche A de la console pour interagir avec l'IA
-                messageUI.text = "[ I.A LOG ] Appuyer sur la touche A pour interagir.";
+            // On vérifie les ressources du joueur
+            int eau = playerInventory.GetWaterDropCount();
+            int graines = playerInventory.GetSeedCount();
+            int fertil = playerInventory.GetFertilizerCount();
+
+            if (eau >= besoinEau && graines >= besoinGraines && fertil >= besoinFertilisant)
+            {
+                AfficherMessage("[ I.A LOG ] Objectif atteint. Appuyer sur la touche A pour continuer.");
+            }
+            else
+            {
+                AfficherMessage("[ I.A. LOG] Appuyer sur la touche A pour interagir.");
+            }
         }
     }
 
@@ -206,9 +207,7 @@ public class AITerminal : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             joueurDansZone = false;
-            if (messageUI != null)
-                // On efface le message
-                messageUI.text = "";
+            AfficherMessage("");
         }
     }
 }

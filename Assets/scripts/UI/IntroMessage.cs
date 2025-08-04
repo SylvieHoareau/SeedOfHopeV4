@@ -9,7 +9,7 @@ public class IntroMessage : MonoBehaviour
     public string message =
         "[IA LOG]" +
         "Collecte de l'eau, des graines et de l'engrais pour restaurer la terre.\n" +
-        "Interragis avec moi (E) lorsque tu es prêt. \n" +
+        "Interragis avec moi (A) lorsque tu es prêt. \n" +
         "Utilise les flèches du clavier pour te déplacer";
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
