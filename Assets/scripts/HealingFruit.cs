@@ -13,7 +13,7 @@ public class HealingFruit : MonoBehaviour
             {
                 health.Heal(healingAmount);
                 Destroy(gameObject);
-                Debug.Log("🍓 Soin reçu : +" + healingAmount + " PV");
+                Debug.Log("Soin reçu : +" + healingAmount + " PV");
             }
         }
     }
