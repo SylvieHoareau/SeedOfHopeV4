@@ -268,22 +268,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 70a4d181c6710e7689d43a5581300f5b, type: 3}
---- !u!1 &14682229 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 776710218615310016, guid: 70a4d181c6710e7689d43a5581300f5b, type: 3}
-  m_PrefabInstance: {fileID: 14682228}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &14682230 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7853281892733717267, guid: 70a4d181c6710e7689d43a5581300f5b, type: 3}
-  m_PrefabInstance: {fileID: 14682228}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14682229}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c5ac0cd4ed3c2c1293d90617971a7a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &17354715 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2184004460185007727, guid: 5bbce09f4ee39c64081e1cc016e0edfc, type: 3}
@@ -1857,6 +1841,14 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4970542125487330058, guid: 6179f69d343447b9099e87a4784aa98c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -653
+      objectReference: {fileID: 0}
+    - target: {fileID: 4970542125487330058, guid: 6179f69d343447b9099e87a4784aa98c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -376
+      objectReference: {fileID: 0}
     - target: {fileID: 5341092379446805323, guid: 6179f69d343447b9099e87a4784aa98c, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
@@ -1864,6 +1856,18 @@ PrefabInstance:
     - target: {fileID: 5341092379446805323, guid: 6179f69d343447b9099e87a4784aa98c, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5341092379446805323, guid: 6179f69d343447b9099e87a4784aa98c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -299
+      objectReference: {fileID: 0}
+    - target: {fileID: 5341092379446805323, guid: 6179f69d343447b9099e87a4784aa98c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -320
+      objectReference: {fileID: 0}
+    - target: {fileID: 6252235950573541629, guid: 6179f69d343447b9099e87a4784aa98c, type: 3}
+      propertyPath: m_margin.z
+      value: -60.772995
       objectReference: {fileID: 0}
     - target: {fileID: 6252235950573541629, guid: 6179f69d343447b9099e87a4784aa98c, type: 3}
       propertyPath: m_fontStyle
@@ -1924,6 +1928,14 @@ PrefabInstance:
     - target: {fileID: 8978965388719326967, guid: 6179f69d343447b9099e87a4784aa98c, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8978965388719326967, guid: 6179f69d343447b9099e87a4784aa98c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 92
+      objectReference: {fileID: 0}
+    - target: {fileID: 8978965388719326967, guid: 6179f69d343447b9099e87a4784aa98c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -262
       objectReference: {fileID: 0}
     - target: {fileID: 9169940266186711508, guid: 6179f69d343447b9099e87a4784aa98c, type: 3}
       propertyPath: m_Name
@@ -4786,6 +4798,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4800051041684077974, guid: 8f622e1c135bbaa4bbc3f4c05f067209, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 830
+      objectReference: {fileID: 0}
+    - target: {fileID: 4800051041684077974, guid: 8f622e1c135bbaa4bbc3f4c05f067209, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 431
+      objectReference: {fileID: 0}
     - target: {fileID: 5659651122732159345, guid: 8f622e1c135bbaa4bbc3f4c05f067209, type: 3}
       propertyPath: m_Name
       value: Pause
@@ -4835,7 +4855,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5195f25141828084a8ebe3beb78779f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isInvincible: 0
   graphics: {fileID: 1318520212}
   maxHealth: 100
   currentHealth: 0
@@ -4857,7 +4876,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   terminal: {fileID: 1851235404}
-  messageObjectifUI: {fileID: 14682229}
+  messageObjectifUI: {fileID: 0}
   waterDropCount: 0
   seedCount: 0
   fertilizerCount: 0
@@ -44411,7 +44430,7 @@ PrefabInstance:
     - target: {fileID: 2593839118216047916, guid: 794c74afd8434894798ba90067dca675, type: 3}
       propertyPath: objectiveUI
       value: 
-      objectReference: {fileID: 14682230}
+      objectReference: {fileID: 0}
     - target: {fileID: 2593839118216047916, guid: 794c74afd8434894798ba90067dca675, type: 3}
       propertyPath: besoinGraines
       value: 1
