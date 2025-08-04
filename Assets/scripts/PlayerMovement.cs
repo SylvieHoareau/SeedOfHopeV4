@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerMovementIsometric : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 5f;
 
@@ -15,11 +15,12 @@ public class PlayerMovementIsometric : MonoBehaviour
     {
         controls = new PlayerControls();
 
+        // Récupère la valeur de l'input de déplacement
         controls.Player.Move.performed += ctx => movement = ctx.ReadValue<Vector2>();
         controls.Player.Move.canceled += ctx => movement = Vector2.zero;
 
         // Blind de l'action Evasion
-        controls.Player.Evade.performed += ContextMenu => Evasion();
+        // controls.Player.Evade.performed += ContextMenu => Evasion();
     }
 
     void OnEnable()
@@ -32,27 +33,31 @@ public class PlayerMovementIsometric : MonoBehaviour
         controls.Disable();  
     }
 
-    void Evasion()
-    {
-        Debug.Log("Evasion activée !");
-        StartCoroutine(EvasionTemporaire());
-    }
+    // void Evasion()
+    // {
+    //     Debug.Log("Evasion activée !");
+    //     StartCoroutine(EvasionTemporaire());
+    // }
 
-    IEnumerator EvasionTemporaire()
-    {
-        Collider2D col = GetComponent<Collider2D>();
-        col.isTrigger = true;
-        // Ajoute un effet visuel ou un champs
-        yield return new WaitForSeconds(1.5f);
-        col.isTrigger = false;
-    }
+    // IEnumerator EvasionTemporaire()
+    // {
+    //     Collider2D col = GetComponent<Collider2D>();
+    //     col.isTrigger = true;
+    //     // Ajoute un effet visuel ou un champs
+    //     yield return new WaitForSeconds(1.5f);
+    //     col.isTrigger = false;
+    // }
     void Start()
     {
+        // Récupère les composants une seule fois au démarrage
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
 
         // Pas besoin de gravité pour un jeu 2D isométrique
-        rb.gravityScale = 0;
+        if (rb != null)
+        {
+            rb.gravityScale = 0;
+        }
     }
 
     void Update()
@@ -73,7 +78,12 @@ public class PlayerMovementIsometric : MonoBehaviour
     void FixedUpdate()
     {
         // Applique le mouvement
-        rb.linearVelocity = movement.normalized * moveSpeed;
+        if (rb != null)
+        {
+            rb.linearVelocity = movement * moveSpeed;
+
+            // rb.linearVelocity = movement.normalized * moveSpeed;
+        }
 
         Debug.Log("Vitesse appliquée : " + rb.linearVelocity);
     }

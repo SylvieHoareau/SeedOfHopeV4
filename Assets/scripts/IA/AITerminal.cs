@@ -7,6 +7,7 @@ public class AITerminal : MonoBehaviour
 {
     // Inventaire du joueur (pour vérifier les ressources)
     public Inventory playerInventory;
+
     [Header("Zones à revitaliser")]
     // Liste des zones qui seront activées si le joueur a assez de ressources
     public GameObject[] zonesARevitaliser;
@@ -14,14 +15,20 @@ public class AITerminal : MonoBehaviour
     [Header("UI")]
     // Zone d'affichage des messages à l'écran
     public TextMeshProUGUI messageUI;
+    // UI du terminal
+    public GameObject terminalUI;
 
     [Header("Ressources requises")]
     // Nombre d'unités d'eau nécessaires
-    public int besoinEau = 2;
+    public int besoinEau;
     // Nombre de graines nécessaires
-    public int besoinGraines = 2;
+    public int besoinGraines;
     // Nombre de fertiliant nécessaire
-    public int besoinFertilisant = 1;
+    public int besoinFertilisant;
+
+    private int eauCollectee = 0;
+    private int grainesCollectees = 0;
+    private int fertilisantCollecte = 0;
 
     // Indique si le joueur est dans la zone d'interaction avec le terminal
     private bool joueurDansZone = false;
@@ -81,6 +88,24 @@ public class AITerminal : MonoBehaviour
     {
         // if (objectiveUI != null)
         //     objectiveUI.AfficherObjectif();
+        // On récupère la référence du script ObjectiveUI
+        if (objectiveUI == null)
+        {
+            objectiveUI = FindObjectOfType<ObjectiveUI>();
+        }
+
+        // On affiche le message d'introduction au début du jeu
+        AfficherMessage("[ I.A. LOG] Bienvenue. Votre mission : sauver la planète");
+    }
+
+    // Ajout d'une fonction centrale pour afficher les messages
+    // Cela rend le code plus propre et plus facile à maintenir
+    public void AfficherMessage(string message)
+    {
+        if (messageUI != null)
+        {
+            messageUI.text = message;
+        }
     }
 
     // Update is called once per frame
@@ -114,9 +139,15 @@ public class AITerminal : MonoBehaviour
                     zone.SetActive(true);
             }
 
+            // On désactive l'UI du terminal pour ne plus afficher l'objectif de collecte
+            if (terminalUI != null)
+            {
+                terminalUI.SetActive(false);
+            }
+
             // On affiche un message de succès à l'écran
-            if (messageUI != null)
-                messageUI.text = "[ I.A LOG ] Ressources suffisantes.\nRevitalisation en cours ... trouvez la porte de sortie";
+                if (messageUI != null)
+                    messageUI.text = "[ I.A LOG ] Ressources suffisantes.\nRevitalisation en cours ... trouvez la porte de sortie";
 
             // On indique que l'objectif est atteint
             if (objectiveUI != null)
@@ -127,6 +158,33 @@ public class AITerminal : MonoBehaviour
         {
             // Si le joueur n'a pas assez de ressources, on affiche un message d'erreur
             messageUI.text = "[ I.A LOG ] Ressources insuffisantes.\nAnalyse en attente...";
+        }
+    }
+
+    // Appeler cette fonction à chaque fois qu'une ressource est collectée
+    public void AjouterRessource(string type, int quantite)
+    {
+        if (type == "eau")
+        {
+            eauCollectee += quantite;
+        }
+        else if (type == "graines")
+        {
+            grainesCollectees += quantite;
+        }
+        else if (type == "fertilisant")
+        {
+            fertilisantCollecte += quantite;
+        }
+
+        // On vérifie si les objectifs sont atteints
+        if (eauCollectee >= besoinEau && grainesCollectees >= besoinGraines && fertilisantCollecte >= besoinFertilisant)
+        {
+            // On appelle la fonction de l'ObjectiveUI
+            if (objectiveUI != null)
+            {
+                objectiveUI.AfficherObjectifAtteint();
+            }
         }
     }
 

@@ -7,7 +7,7 @@ using System.Collections;
 public class PlayerHealth : MonoBehaviour
 {
     // Indique si le joueur est temporairement invincible après avoir été touché
-    public bool isInvincible = false;
+    // public bool isInvincible = false;
     // Permet d'afficher le joueur à l'écran (utile pour faire clignoter le joueur quand il est touché)
     public SpriteRenderer graphics;
     // Vie maximale du joueur
@@ -29,6 +29,8 @@ public class PlayerHealth : MonoBehaviour
     public GameObject gameOverUI;
     // Temps entre chaque clignotement du joueur quand il est invincible
     public float InvincibilityFlashDelay = 0.2f;
+    // Pour éviter que le joueur spamme la touche R
+    private bool escapeOnCooldown = false;
 
     // Cette fonction est appelé au début du jeu
     public void Start()
@@ -47,6 +49,8 @@ public class PlayerHealth : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
+    
+
     // Cette fonction est appelée à chaque image du jeu
     public void Update()
     {
@@ -55,31 +59,37 @@ public class PlayerHealth : MonoBehaviour
         {
             TakeDamage(20);
         }
+
+        // Touche R du clavier ou bouton Y de la manette (joystick button 3)
+        // if ((Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.Joystick2Button3) && !isInvincible))
+        // {
+        //     StartCoroutine(TemporaryEscapeInvincibility());
+        // }
     }
 
     // Cette fonction enlève de la vie au joueur quand il est touché
     public void TakeDamage(int damage)
     {
         // Si le joueur n'est pas invincible...
-        if (!isInvincible)
-        {
-            // On joue le on de coup reçu
-            if (hitSound != null && audioSource != null)
-            {
-                audioSource.PlayOneShot(hitSound);
-            }
+        // if (!isInvincible)
+        // {
+        //     // On joue le son de coup reçu
+        //     if (hitSound != null && audioSource != null)
+        //     {
+        //         audioSource.PlayOneShot(hitSound);
+        //     }
 
-            // On enlève les points de vie
-            currentHealth = Math.Max(0, currentHealth - damage);
-            // On met à jour la barre de vie
-            healthBar.SetHealth(currentHealth);
-            // Le joueur devient invincible pendant un moment
-            isInvincible = true;
-            // On fait clignoter le joueur pour montrer qu'il devient invincible
-            StartCoroutine(InvincibilityFlash());
-            // On attend avant de pouvoir être touché à nouveau
-            StartCoroutine(HandleInvincibilityDelay());
-        }
+        //     // On enlève les points de vie
+        //     currentHealth = Math.Max(0, currentHealth - damage);
+        //     // On met à jour la barre de vie
+        //     healthBar.SetHealth(currentHealth);
+        //     // Le joueur devient invincible pendant un moment
+        //     isInvincible = true;
+        //     // On fait clignoter le joueur pour montrer qu'il devient invincible
+        //     StartCoroutine(InvincibilityFlash());
+        //     // On attend avant de pouvoir être touché à nouveau
+        //     StartCoroutine(HandleInvincibilityDelay());
+        // }
 
         // Si la vie du joueur tombe à zéro, il meurt
         if (currentHealth <= 0)
@@ -113,23 +123,36 @@ public class PlayerHealth : MonoBehaviour
     }
 
     // Cette fonction fait clignoter le joueur quand il est invincible
-    public IEnumerator InvincibilityFlash()
-    {
-        while (isInvincible)
-        {
-            graphics.color = new Color(1f, 1f, 1f, 0f); // invisible
-            yield return new WaitForSeconds(InvincibilityFlashDelay);
-            graphics.color = new Color(1f, 1f, 1f, 1f); // visible
-            yield return new WaitForSeconds(InvincibilityFlashDelay);
-        }
-    }
+    // public IEnumerator InvincibilityFlash()
+    // {
+    //     while (isInvincible)
+    //     {
+    //         graphics.color = new Color(1f, 1f, 1f, 0f); // invisible
+    //         yield return new WaitForSeconds(InvincibilityFlashDelay);
+    //         graphics.color = new Color(1f, 1f, 1f, 1f); // visible
+    //         yield return new WaitForSeconds(InvincibilityFlashDelay);
+    //     }
+    // }
+
+    // public IEnumerator TemporaryEscapeInvincibility()
+    // {
+    //     escapeOnCooldown = true;
+    //     isInvincible = true;
+    //     Debug.Log("Invincibilité d'urgence activée !");
+    //     StartCoroutine(InvincibilityFlash());
+    //     yield return new WaitForSeconds(InvincibilityTimeAfterHit);
+    //     isInvincible = false;
+    //     Debug.Log("Fin de l'invincibilité d'urgence.");
+    //     yield return new WaitForSeconds(5f); // 5 secondes de cooldown
+    //     escapeOnCooldown = false;
+    // }
 
     // Cette fonction gère le temps d'invincibilité après avoir été touché
-    public IEnumerator HandleInvincibilityDelay()
-    {
-        yield return new WaitForSeconds(InvincibilityTimeAfterHit);
-        isInvincible = false;
-    }
+    // public IEnumerator HandleInvincibilityDelay()
+    // {
+    //     yield return new WaitForSeconds(InvincibilityTimeAfterHit);
+    //     isInvincible = false;
+    // }
 
     // Cette fonction gère le soin du joueur pendant le niveau 4
     public void Heal(int amount)
