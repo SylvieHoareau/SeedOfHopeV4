@@ -7,7 +7,7 @@ using System.Collections;
 public class PlayerHealth : MonoBehaviour
 {
     // Indique si le joueur est temporairement invincible après avoir été touché
-    // public bool isInvincible = false;
+    public bool isInvincible = false;
     // Permet d'afficher le joueur à l'écran (utile pour faire clignoter le joueur quand il est touché)
     public SpriteRenderer graphics;
     // Vie maximale du joueur
@@ -88,7 +88,7 @@ public class PlayerHealth : MonoBehaviour
             // On fait clignoter le joueur pour montrer qu'il devient invincible
             StartCoroutine(InvincibilityFlash());
             // On attend avant de pouvoir être touché à nouveau
-            StartCoroutine(HandleInvincibilityDelay());
+            // StartCoroutine(HandleInvincibilityDelay());
         }
 
         // Si la vie du joueur tombe à zéro, il meurt

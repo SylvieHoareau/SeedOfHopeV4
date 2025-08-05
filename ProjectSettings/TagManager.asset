@@ -6,8 +6,8 @@ TagManager:
   tags:
   - Pickup
   - Collectible
-  - Enemy
   - HealingItem
+  - Ennemy
   layers:
   - Default
   - TransparentFX
