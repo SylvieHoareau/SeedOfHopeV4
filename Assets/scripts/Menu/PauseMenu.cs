@@ -6,6 +6,8 @@ public class PauseMenu : MonoBehaviour
 {
     [SerializeField] GameObject pauseMenu;
 
+    public bool IsPaused;
+
     public void Pause()
     {
         pauseMenu.SetActive(true);
@@ -28,6 +30,25 @@ public class PauseMenu : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         Time.timeScale = 1;
+    }
+
+    void Update()
+    {
+        // Détecte l'appui sur le bouton Start
+        // La détection des boutons de manettes peut varier
+        if (Input.GetKeyDown(KeyCode.JoystickButton7))
+        {
+            if (pauseMenu.activeSelf)
+            {
+                // Si le menu pause est déjà actif, on le désactive et on 
+                Resume();
+            }
+            else
+            {
+                // Sinon, on met le jeu en pause et on active le menu
+                Pause();
+            }
+        }
     }
 
 }
