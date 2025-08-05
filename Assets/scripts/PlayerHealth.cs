@@ -49,7 +49,7 @@ public class PlayerHealth : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-    
+
 
     // Cette fonction est appelée à chaque image du jeu
     public void Update()
@@ -159,6 +159,18 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
         healthBar.SetHealth(currentHealth); // si tu as une barre de vie
+    }
+
+    // Cette fonction est appelée lorsqu'un autre collider entre en contact
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // On vérifie si l'objet avec lequel le joueur est entré en collision
+        if (collision.gameObject.CompareTag("Ennemy"))
+        {
+            // Si c'est un ennemi, on appelle la fonction pour enlever de la vie au joueur
+            // On peut passer un nombre fixe ou une variable pour les dégâts
+            TakeDamage(20);
+        }
     }
 
 }
